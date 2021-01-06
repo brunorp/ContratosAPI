@@ -33,3 +33,8 @@ C:\Users\BrunoRossettoPereira\Desktop\projects\contratos_api\ContratosAPI\obj\De
 C:\Users\BrunoRossettoPereira\Desktop\projects\contratos_api\ContratosAPI\obj\Debug\netcoreapp3.1\ContratosAPI.dll
 C:\Users\BrunoRossettoPereira\Desktop\projects\contratos_api\ContratosAPI\obj\Debug\netcoreapp3.1\ContratosAPI.pdb
 C:\Users\BrunoRossettoPereira\Desktop\projects\contratos_api\ContratosAPI\obj\Debug\netcoreapp3.1\ContratosAPI.genruntimeconfig.cache
+C:\Users\BrunoRossettoPereira\Desktop\projects\contratos_api\ContratosAPI\bin\Debug\netcoreapp3.1\Microsoft.OpenApi.dll
+C:\Users\BrunoRossettoPereira\Desktop\projects\contratos_api\ContratosAPI\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\BrunoRossettoPereira\Desktop\projects\contratos_api\ContratosAPI\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\BrunoRossettoPereira\Desktop\projects\contratos_api\ContratosAPI\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\BrunoRossettoPereira\Desktop\projects\contratos_api\ContratosAPI\obj\Debug\netcoreapp3.1\ContratosAPI.MvcApplicationPartsAssemblyInfo.cs

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using ContratosAPI.Data;
 using ContratosAPI.Models;
@@ -21,39 +22,35 @@ namespace ContratosAPI.Controllers
 
         [HttpGet]
         [Route("")]
-        public async Task<ActionResult<List<Contrato>>> Get([FromServices] DataContext context)
+        public async Task<ActionResult<List<Contrato>>> GetContratos([FromServices] DataContext context)
         {
             var contratos = await context.Contratos.ToListAsync();
             return contratos;
+        }
+
+        [HttpGet]
+        [Route("{id}")]
+        public async Task<ActionResult<Contrato>> GetContrato(int id)
+        {
+            var contrato = await _context.Contratos.FindAsync(id);
+
+            if(contrato == null)
+            {
+                return NotFound();
+            }
+
+            return contrato;
         }
 
         [HttpPost]
         [Route("")]
         public async Task<ActionResult<Contrato>> Post([FromServices] DataContext context, [FromBody] Contrato contrato)
         {
-            double valorPrestacao = (double)contrato.ValorFinanciado/contrato.QuantidadeParcelas;
-            var dataVencimento = DateTime.Today.Date.AddDays(30);
-            var dataPagamento = DateTime.Today.Date.AddDays(25);
-            var status = "Baixada";
+           
             if(ModelState.IsValid)
             {
                 context.Contratos.Add(contrato);
-                for(var i = 0; i<contrato.QuantidadeParcelas; i++)
-                {
-                    Prestacao prestacao = new Prestacao();
-                    prestacao.ContratoId = contrato.Id;
-                    prestacao.DataVencimento = dataVencimento;
-                    prestacao.DataPagamento = dataPagamento;
-                    prestacao.Valor = valorPrestacao;
-                     if(prestacao.DataVencimento >= DateTime.Today.Date && prestacao.DataPagamento.Equals(null))
-                        status = "Aberta";
-                    else if(prestacao.DataVencimento < DateTime.Today.Date && prestacao.DataPagamento.Equals(null))
-                        status = "Atrasada";
-                    prestacao.Status = status;
-                    context.Prestacoes.Add(prestacao);
-                    dataVencimento = dataVencimento.AddDays(30);
-                    dataPagamento = dataPagamento.AddDays(25);
-                }
+                PostPrestacao(contrato, contrato.Id);
                 await context.SaveChangesAsync();
                 return contrato;
             }
@@ -63,8 +60,32 @@ namespace ContratosAPI.Controllers
             }
         }
 
+        [HttpPut]
+        [Route("editar/{id}")]
+        public async Task<ActionResult> PutContrato(int id, [FromBody] Contrato contrato)
+        {
+            if(contrato == null)
+            {
+                return NotFound();
+            }
+
+            var contratoExistente = await _context.Contratos.FindAsync(id);
+            contratoExistente.DataContratacao = contrato.DataContratacao;
+            contratoExistente.QuantidadeParcelas = contrato.QuantidadeParcelas;
+            contratoExistente.ValorFinanciado = contrato.ValorFinanciado;
+            contratoExistente.Prestacoes = contrato.Prestacoes;
+
+            var prestacoes =  await _context.Prestacoes.Where(p => id == p.ContratoId).ToArrayAsync();
+            _context.Prestacoes.RemoveRange(prestacoes);
+            PostPrestacao(contrato, id);
+
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
         [HttpDelete]
-        [Route("delete/{id}")]
+        [Route("deletar/{id}")]
         public async Task<ActionResult<Contrato>> DeleteContrato(int id)
         {
             var contrato = await _context.Contratos.FindAsync(id);
@@ -75,9 +96,35 @@ namespace ContratosAPI.Controllers
             }
 
             _context.Contratos.Remove(contrato);
+            var prestacoes = await _context.Prestacoes.Where(p => id == p.ContratoId).ToArrayAsync();
+            _context.Prestacoes.RemoveRange(prestacoes);
+
             await _context.SaveChangesAsync();
 
             return contrato;
+        }
+
+        private void PostPrestacao(Contrato contrato, int id){
+            var dataVencimento = DateTime.Today.Date.AddDays(30);
+            var dataPagamento = DateTime.Today.Date.AddDays(25);
+            double valorPrestacao = (double)contrato.ValorFinanciado/contrato.QuantidadeParcelas;
+            var status = "Baixada";
+            for(var i = 0; i<contrato.QuantidadeParcelas; i++)
+            {
+                Prestacao prestacao = new Prestacao();
+                prestacao.ContratoId = id;
+                prestacao.DataVencimento = dataVencimento;
+                prestacao.DataPagamento = dataPagamento;
+                prestacao.Valor = valorPrestacao;
+                    if(prestacao.DataVencimento >= DateTime.Today.Date && prestacao.DataPagamento.Equals(null))
+                    status = "Aberta";
+                else if(prestacao.DataVencimento < DateTime.Today.Date && prestacao.DataPagamento.Equals(null))
+                    status = "Atrasada";
+                prestacao.Status = status;
+                _context.Prestacoes.Add(prestacao);
+                dataVencimento = dataVencimento.AddDays(30);
+                dataPagamento = dataPagamento.AddDays(25);
+            }
         }
 
     }
