@@ -1,20 +1,23 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace ContratosAPI.Models
 {
     public class Prestacao
     {
+        [Key]
+        public int Id { get; set; }
+
         [Required(ErrorMessage = "Este campo é obrigatório.")]
         public int ContratoId { get; set; }
 
         [Required(ErrorMessage = "Este campo é obrigatório.")]
-        public DataType DataVencimento { get; set; }
+        public DateTime DataVencimento { get; set; }
+
+        public DateTime? DataPagamento { get; set; } = null;
 
         [Required(ErrorMessage = "Este campo é obrigatório.")]
-        public DataType DataPagamento { get; set; }
-
-        [Required(ErrorMessage = "Este campo é obrigatório.")]
-        public int Valor { get; set; }
+        public double Valor { get; set; }
 
         public string Status { get; set; }
     }

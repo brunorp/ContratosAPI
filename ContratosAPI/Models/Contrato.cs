@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace ContratosAPI.Models
@@ -5,10 +6,10 @@ namespace ContratosAPI.Models
     public class Contrato
     { 
         [Key]
-        public int Id {get; set;}
+        public int Id {get; private set;}
 
         [Required(ErrorMessage = "Este campo é obrigatório.")]
-        public DataType DataContratacao {get; set;}
+        public string DataContratacao {get; set;}
 
         [Required(ErrorMessage = "Este campo é obrigatório.")]
         public int QuantidadeParcelas { get; set; }
