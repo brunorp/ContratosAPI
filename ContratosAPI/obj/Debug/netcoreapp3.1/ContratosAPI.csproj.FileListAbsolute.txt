@@ -38,3 +38,4 @@ C:\Users\BrunoRossettoPereira\Desktop\projects\contratos_api\ContratosAPI\bin\De
 C:\Users\BrunoRossettoPereira\Desktop\projects\contratos_api\ContratosAPI\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerGen.dll
 C:\Users\BrunoRossettoPereira\Desktop\projects\contratos_api\ContratosAPI\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerUI.dll
 C:\Users\BrunoRossettoPereira\Desktop\projects\contratos_api\ContratosAPI\obj\Debug\netcoreapp3.1\ContratosAPI.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\BrunoRossettoPereira\Desktop\projects\contratos_api\ContratosAPI\bin\Debug\netcoreapp3.1\Microsoft.FeatureManagement.dll
