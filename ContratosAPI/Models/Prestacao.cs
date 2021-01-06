@@ -20,8 +20,4 @@ namespace ContratosAPI.Models
     }
 }
 
-
-
-
-
 //Entidade Prestação: contrato, data vencimento, data pagamento, valor, status (Aberta, Baixada, Atrasada).
