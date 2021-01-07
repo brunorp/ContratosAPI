@@ -36,10 +36,13 @@ namespace ContratosAPI.Services
         }
 
         public async Task<ActionResult<Contrato>> PostContratoService([FromBody] Contrato contrato)
-        {
+        {     
+             
+            contrato.Prestacoes = PostPrestacao(contrato, contrato.Id);
             _context.Contratos.Add(contrato);
-            PostPrestacao(contrato, contrato.Id);
+
             await _context.SaveChangesAsync();
+
             return contrato;
         }
 
@@ -52,11 +55,12 @@ namespace ContratosAPI.Services
             contratoExistente.DataContratacao = contrato.DataContratacao;
             contratoExistente.QuantidadeParcelas = contrato.QuantidadeParcelas;
             contratoExistente.ValorFinanciado = contrato.ValorFinanciado;
-            contratoExistente.Prestacoes = contrato.Prestacoes;
 
             await DeletePrestacao(id);
             PostPrestacao(contrato, id);
             await _context.SaveChangesAsync();
+
+            contratoExistente.Prestacoes = await Task.Run(() => _context.Prestacoes.ToListAsync());
 
             return contratoExistente;
         }
@@ -80,8 +84,9 @@ namespace ContratosAPI.Services
             _context.Prestacoes.RemoveRange(prestacoes);
         }
 
-        private void PostPrestacao(Contrato contrato, int id)
-        {
+        private List<Prestacao> PostPrestacao(Contrato contrato, int id)
+        {   
+            List<Prestacao> prestacoes = new List<Prestacao>();
             var dataVencimento = DateTime.Today.Date.AddDays(30);
             var dataPagamento = DateTime.Today.Date.AddDays(25);
             double valorPrestacao = (double)contrato.ValorFinanciado/contrato.QuantidadeParcelas;
@@ -101,7 +106,16 @@ namespace ContratosAPI.Services
                 _context.Prestacoes.Add(prestacao);
                 dataVencimento = dataVencimento.AddDays(30);
                 dataPagamento = dataPagamento.AddDays(25);
-            }
+                prestacoes.Add(prestacao);
+            }            
+            return prestacoes;
+        }
+
+        private async void InserePrestacoes(Contrato contrato)
+        {
+            var prestacoes = await Task.Run(() => _context.Prestacoes.ToListAsync()); 
+            contrato.Prestacoes = prestacoes;
+            await _context.SaveChangesAsync();
         }
 
         private void VerificaErro(Contrato contrato)

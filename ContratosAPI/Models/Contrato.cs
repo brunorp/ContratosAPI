@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace ContratosAPI.Models
@@ -16,7 +17,6 @@ namespace ContratosAPI.Models
         [Required(ErrorMessage = "Este campo é obrigatório.")]
         public int ValorFinanciado { get; set; }
 
-        [Required(ErrorMessage = "Este campo é obrigatório.")]
-        public int Prestacoes { get; set; }
+        public List<Prestacao> Prestacoes { get; set; }
     }
 }

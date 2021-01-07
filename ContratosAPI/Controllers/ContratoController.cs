@@ -38,7 +38,6 @@ namespace ContratosAPI.Controllers
             }
             return await cache.GetOrCreateAsync(_context.Contratos.ToListAsync(), entry => 
             {
-                Console.WriteLine(DateTime.Today.AddDays(1));
                 entry.AbsoluteExpiration = new DateTimeOffset(DateTime.Today.AddDays(1));
                 return _service.GetContratosService();
             });
