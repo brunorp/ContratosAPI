@@ -17,7 +17,7 @@ namespace ContratosAPI.Controllers
     {
         private readonly IFeatureManager _featureManager;
         private readonly IMemoryCache _cache;
-        private DataContext _context;
+        private readonly DataContext _context;
         private readonly IContratoService _service;
         public ContratoController(IContratoService service, DataContext context, IMemoryCache cache, IFeatureManager featureManager)
         {

@@ -15,7 +15,7 @@ namespace ContratosAPI.Services
     {
         private readonly IFeatureManager _featureManager;
         private readonly IMemoryCache _cache;
-        private DataContext _context;
+        private readonly DataContext _context;
         public ContratoService(DataContext context, IMemoryCache cache, IFeatureManager featureManager)
         {
             _context = context;
@@ -57,7 +57,7 @@ namespace ContratosAPI.Services
             contratoExistente.ValorFinanciado = contrato.ValorFinanciado;
             contratoExistente.Prestacoes = contrato.Prestacoes;
 
-            DeletePrestacao(id);
+            await DeletePrestacao(id);
             PostPrestacao(contrato, id);
             await _context.SaveChangesAsync();
 
@@ -71,13 +71,13 @@ namespace ContratosAPI.Services
             VerificaErro(contrato);
 
             _context.Contratos.Remove(contrato);
-            DeletePrestacao(id);
+            await DeletePrestacao(id);
             await _context.SaveChangesAsync();
 
             return contrato;
         }
 
-        private async void DeletePrestacao(int id)
+        private async Task DeletePrestacao(int id)
         {
             var prestacoes = await _context.Prestacoes.Where(p => id == p.ContratoId).ToArrayAsync();
             _context.Prestacoes.RemoveRange(prestacoes);
@@ -96,7 +96,7 @@ namespace ContratosAPI.Services
                 prestacao.DataVencimento = dataVencimento;
                 prestacao.DataPagamento = dataPagamento;
                 prestacao.Valor = valorPrestacao;
-                    if(prestacao.DataVencimento >= DateTime.Today.Date && prestacao.DataPagamento.Equals(null))
+                if(prestacao.DataVencimento >= DateTime.Today.Date && prestacao.DataPagamento.Equals(null))
                     status = "Aberta";
                 else if(prestacao.DataVencimento < DateTime.Today.Date && prestacao.DataPagamento.Equals(null))
                     status = "Atrasada";
@@ -111,7 +111,7 @@ namespace ContratosAPI.Services
         {
             if(contrato == null)
             {
-                throw new System.Exception("Contrato inexistente");
+                throw new ArgumentNullException("Contrato inexistente");
             }
         }
     }

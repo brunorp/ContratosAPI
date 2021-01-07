@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ContratosAPI.Data;
@@ -13,7 +12,7 @@ namespace ContratosAPI.Controllers
     public class PrestacaoController : ControllerBase
     {
 
-        private DataContext _context;
+        private readonly DataContext _context;
         public PrestacaoController(DataContext context)
         {
             _context = context;
