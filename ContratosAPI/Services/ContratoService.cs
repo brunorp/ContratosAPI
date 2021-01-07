@@ -11,8 +11,6 @@ namespace ContratosAPI.Services
 {
     public class ContratoService : IContratoService
     {
-      //  private readonly IFeatureManager _featureManager;
-       // private readonly IMemoryCache _cache;
         private readonly DataContext _context;
 
         public ContratoService(DataContext context)
@@ -20,7 +18,7 @@ namespace ContratosAPI.Services
             _context = context;
         }
 
-        public async Task<ActionResult<Contrato>> GetContratoService(int id)
+        public async Task<Contrato> GetContratoService(int id)
         {
             var contrato = await _context.Contratos.FindAsync(id);
             
@@ -115,13 +113,6 @@ namespace ContratosAPI.Services
                 prestacoes.Add(prestacao);
             }            
             return prestacoes;
-        }
-
-        private async void InserePrestacoes(Contrato contrato)
-        {
-            var prestacoes = await Task.Run(() => _context.Prestacoes.ToListAsync()); 
-            contrato.Prestacoes = prestacoes;
-            await _context.SaveChangesAsync();
         }
 
         private void VerificaErro(Contrato contrato)

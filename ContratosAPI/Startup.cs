@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using ContratosAPI.Data;
 using ContratosAPI.Services;
 using Microsoft.AspNetCore.Builder;
@@ -11,6 +12,7 @@ using Microsoft.OpenApi.Models;
 
 namespace ContratosAPI
 {
+    [ExcludeFromCodeCoverage]
     public class Startup
     {
         public Startup(IConfiguration configuration)

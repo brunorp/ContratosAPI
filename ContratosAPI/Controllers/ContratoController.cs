@@ -44,7 +44,7 @@ namespace ContratosAPI.Controllers
 
         [HttpGet]
         [Route("{id}")]
-        public async Task<ActionResult<Contrato>> GetContrato(int id)
+        public async Task<Contrato> GetContrato(int id)
         {
            return await _service.GetContratoService(id);
         }

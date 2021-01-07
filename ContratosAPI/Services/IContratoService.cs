@@ -7,7 +7,7 @@ namespace ContratosAPI.Services
 {
     public interface IContratoService
     {
-        Task<ActionResult<Contrato>> GetContratoService(int id);
+        Task<Contrato> GetContratoService(int id);
         Task<List<Contrato>> GetContratosService();
         Task<ActionResult<Contrato>> PostContratoService([FromBody] Contrato contrato);
         Task<ActionResult<Contrato>> PutContratoService(int id, [FromBody] Contrato contrato);
