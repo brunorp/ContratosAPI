@@ -23,8 +23,10 @@ namespace ContratosAPI.Services
         public async Task<ActionResult<Contrato>> GetContratoService(int id)
         {
             var contrato = await _context.Contratos.FindAsync(id);
-
+            
             VerificaErro(contrato);
+
+            contrato.Prestacoes = await _context.Prestacoes.Where(p => contrato.Id == p.ContratoId).ToListAsync();
 
             return contrato;
         }
@@ -32,6 +34,10 @@ namespace ContratosAPI.Services
         public async Task<List<Contrato>> GetContratosService()
         {
             var contratos = await _context.Contratos.ToListAsync();
+            foreach(var contrato in contratos)
+            {
+                contrato.Prestacoes = await _context.Prestacoes.Where(p => contrato.Id == p.ContratoId).ToListAsync();
+            }
             return contratos;
         }
 
