@@ -27,7 +27,7 @@ namespace ContratosAPI.Services
         {
             var contrato = await _context.Contratos.FindAsync(id);
 
-            errorMessage(contrato);
+            VerificaErro(contrato);
 
             return contrato;
         }
@@ -48,7 +48,7 @@ namespace ContratosAPI.Services
 
         public async Task<ActionResult<Contrato>> PutContratoService(int id, [FromBody] Contrato contrato)
         {
-            errorMessage(contrato);
+            VerificaErro(contrato);
 
             var contratoExistente = await _context.Contratos.FindAsync(id);
 
@@ -57,10 +57,8 @@ namespace ContratosAPI.Services
             contratoExistente.ValorFinanciado = contrato.ValorFinanciado;
             contratoExistente.Prestacoes = contrato.Prestacoes;
 
-            var prestacoes =  await _context.Prestacoes.Where(p => id == p.ContratoId).ToArrayAsync();
-            _context.Prestacoes.RemoveRange(prestacoes);
+            DeletePrestacao(id);
             PostPrestacao(contrato, id);
-
             await _context.SaveChangesAsync();
 
             return contratoExistente;
@@ -70,18 +68,23 @@ namespace ContratosAPI.Services
         {
             var contrato = await _context.Contratos.FindAsync(id);
 
-            errorMessage(contrato);
+            VerificaErro(contrato);
 
             _context.Contratos.Remove(contrato);
-            var prestacoes = await _context.Prestacoes.Where(p => id == p.ContratoId).ToArrayAsync();
-            _context.Prestacoes.RemoveRange(prestacoes);
-
+            DeletePrestacao(id);
             await _context.SaveChangesAsync();
 
             return contrato;
         }
 
-        public void PostPrestacao(Contrato contrato, int id){
+        private async void DeletePrestacao(int id)
+        {
+            var prestacoes = await _context.Prestacoes.Where(p => id == p.ContratoId).ToArrayAsync();
+            _context.Prestacoes.RemoveRange(prestacoes);
+        }
+
+        public void PostPrestacao(Contrato contrato, int id)
+        {
             var dataVencimento = DateTime.Today.Date.AddDays(30);
             var dataPagamento = DateTime.Today.Date.AddDays(25);
             double valorPrestacao = (double)contrato.ValorFinanciado/contrato.QuantidadeParcelas;
@@ -104,7 +107,7 @@ namespace ContratosAPI.Services
             }
         }
 
-        public void errorMessage(Contrato contrato)
+        public void VerificaErro(Contrato contrato)
         {
             if(contrato == null)
             {

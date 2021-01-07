@@ -13,6 +13,5 @@ namespace ContratosAPI.Services
         Task<ActionResult<Contrato>> PostContratoService([FromBody] Contrato contrato);
         Task<ActionResult<Contrato>> PutContratoService(int id, [FromBody] Contrato contrato);
         Task<ActionResult<Contrato>> DeleteContratoService(int id);
-        void PostPrestacao(Contrato contrato, int id);
     }
 }
