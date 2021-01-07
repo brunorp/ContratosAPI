@@ -10,8 +10,8 @@ RUN dotnet tool install --global dotnet-sonarscanner
 ENV PATH="${PATH}:/root/.dotnet/tools"
 ENV JAVA_TOOL_OPTIONS -Dfile.encoding=UTF8
 
-COPY . ./ContratosAPI
-WORKDIR /ContratosAPI
+COPY . ./contratos_api
+WORKDIR /contratos_api
 
 RUN dotnet restore
 

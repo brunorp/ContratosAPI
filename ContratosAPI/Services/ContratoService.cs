@@ -6,21 +6,18 @@ using ContratosAPI.Data;
 using ContratosAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Caching.Memory;
-using Microsoft.FeatureManagement;
 
 namespace ContratosAPI.Services
 {
     public class ContratoService : IContratoService
     {
-        private readonly IFeatureManager _featureManager;
-        private readonly IMemoryCache _cache;
+      //  private readonly IFeatureManager _featureManager;
+       // private readonly IMemoryCache _cache;
         private readonly DataContext _context;
-        public ContratoService(DataContext context, IMemoryCache cache, IFeatureManager featureManager)
+
+        public ContratoService(DataContext context)
         {
             _context = context;
-             _cache = cache;
-            _featureManager = featureManager;
         }
 
         public async Task<ActionResult<Contrato>> GetContratoService(int id)
@@ -32,7 +29,7 @@ namespace ContratosAPI.Services
             return contrato;
         }
 
-        public async Task<ActionResult<List<Contrato>>> GetContratosService()
+        public async Task<List<Contrato>> GetContratosService()
         {
             var contratos = await _context.Contratos.ToListAsync();
             return contratos;
@@ -83,7 +80,7 @@ namespace ContratosAPI.Services
             _context.Prestacoes.RemoveRange(prestacoes);
         }
 
-        public void PostPrestacao(Contrato contrato, int id)
+        private void PostPrestacao(Contrato contrato, int id)
         {
             var dataVencimento = DateTime.Today.Date.AddDays(30);
             var dataPagamento = DateTime.Today.Date.AddDays(25);
@@ -107,7 +104,7 @@ namespace ContratosAPI.Services
             }
         }
 
-        public void VerificaErro(Contrato contrato)
+        private void VerificaErro(Contrato contrato)
         {
             if(contrato == null)
             {

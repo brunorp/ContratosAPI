@@ -30,7 +30,11 @@
         },
         "frameworks": {
           "netcoreapp3.1": {
-            "projectReferences": {}
+            "projectReferences": {
+              "C:\\Users\\BrunoRossettoPereira\\Desktop\\projects\\contratos_api\\ContratosAPI\\ContratosAPI.csproj": {
+                "projectPath": "C:\\Users\\BrunoRossettoPereira\\Desktop\\projects\\contratos_api\\ContratosAPI\\ContratosAPI.csproj"
+              }
+            }
           }
         },
         "warningProperties": {
@@ -46,9 +50,17 @@
               "target": "Package",
               "version": "[16.5.0, )"
             },
+            "Moq": {
+              "target": "Package",
+              "version": "[4.15.2, )"
+            },
             "coverlet.collector": {
               "target": "Package",
               "version": "[1.2.0, )"
+            },
+            "coverlet.msbuild": {
+              "target": "Package",
+              "version": "[2.9.0, )"
             },
             "xunit": {
               "target": "Package",
@@ -70,6 +82,79 @@
           "assetTargetFallback": true,
           "warn": true,
           "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.403\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\BrunoRossettoPereira\\Desktop\\projects\\contratos_api\\ContratosAPI\\ContratosAPI.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\BrunoRossettoPereira\\Desktop\\projects\\contratos_api\\ContratosAPI\\ContratosAPI.csproj",
+        "projectName": "ContratosAPI",
+        "projectPath": "C:\\Users\\BrunoRossettoPereira\\Desktop\\projects\\contratos_api\\ContratosAPI\\ContratosAPI.csproj",
+        "packagesPath": "C:\\Users\\BrunoRossettoPereira\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\BrunoRossettoPereira\\Desktop\\projects\\contratos_api\\ContratosAPI\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Microsoft\\Xamarin\\NuGet\\"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\BrunoRossettoPereira\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp3.1"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp3.1": {
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "dependencies": {
+            "Microsoft.EntityFrameworkCore.InMemory": {
+              "target": "Package",
+              "version": "[5.0.1, )"
+            },
+            "Microsoft.FeatureManagement": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
+            "Swashbuckle.AspNetCore": {
+              "target": "Package",
+              "version": "[5.6.3, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }

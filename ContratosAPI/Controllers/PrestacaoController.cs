@@ -12,12 +12,6 @@ namespace ContratosAPI.Controllers
     public class PrestacaoController : ControllerBase
     {
 
-        private readonly DataContext _context;
-        public PrestacaoController(DataContext context)
-        {
-            _context = context;
-        }
-
         [HttpGet]
         [Route("")]
         public async Task<ActionResult<List<Prestacao>>> Get([FromServices] DataContext context)
