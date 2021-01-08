@@ -9,8 +9,8 @@ namespace ContratosAPI.Services
     {
         Task<Contrato> GetContratoService(int id);
         Task<List<Contrato>> GetContratosService();
-        Task<ActionResult<Contrato>> PostContratoService([FromBody] Contrato contrato);
-        Task<ActionResult<Contrato>> PutContratoService(int id, [FromBody] Contrato contrato);
-        Task<ActionResult<Contrato>> DeleteContratoService(int id);
+        Task<Contrato> PostContratoService([FromBody] Contrato contrato);
+        Task<Contrato> PutContratoService(int id, [FromBody] Contrato contrato);
+        Task<Contrato> DeleteContratoService(int id);
     }
 }

@@ -18,6 +18,7 @@ namespace ContratosAPI.Services
             _context = context;
         }
 
+        // Retorna um contrato específico
         public async Task<Contrato> GetContratoService(int id)
         {
             var contrato = await _context.Contratos.FindAsync(id);
@@ -29,6 +30,7 @@ namespace ContratosAPI.Services
             return contrato;
         }
 
+        // Retorna uma lista com todos os contratos cadastrados
         public async Task<List<Contrato>> GetContratosService()
         {
             var contratos = await _context.Contratos.ToListAsync();
@@ -39,7 +41,8 @@ namespace ContratosAPI.Services
             return contratos;
         }
 
-        public async Task<ActionResult<Contrato>> PostContratoService([FromBody] Contrato contrato)
+        // Cria um contrato e suas respectivas parcelas
+        public async Task<Contrato> PostContratoService([FromBody] Contrato contrato)
         {     
              
             contrato.Prestacoes = PostPrestacao(contrato, contrato.Id);
@@ -50,7 +53,8 @@ namespace ContratosAPI.Services
             return contrato;
         }
 
-        public async Task<ActionResult<Contrato>> PutContratoService(int id, [FromBody] Contrato contrato)
+        // Atualiza um contrato e suas respectivas parcelas
+        public async Task<Contrato> PutContratoService(int id, [FromBody] Contrato contrato)
         {
             VerificaErro(contrato);
 
@@ -69,7 +73,8 @@ namespace ContratosAPI.Services
             return contratoExistente;
         }
 
-        public async Task<ActionResult<Contrato>> DeleteContratoService(int id)
+        // Deleta um contrato e suas respectivas parcelas
+        public async Task<Contrato> DeleteContratoService(int id)
         {
             var contrato = await _context.Contratos.FindAsync(id);
 
@@ -82,12 +87,14 @@ namespace ContratosAPI.Services
             return contrato;
         }
 
+        // Realiza a remoção das prestações de um determinado contrato
         private async Task DeletePrestacao(int id)
         {
             var prestacoes = await _context.Prestacoes.Where(p => id == p.ContratoId).ToArrayAsync();
             _context.Prestacoes.RemoveRange(prestacoes);
         }
 
+        // Realiza o cadastro de prestações de um contrato
         private List<Prestacao> PostPrestacao(Contrato contrato, int id)
         {   
             List<Prestacao> prestacoes = new List<Prestacao>();
@@ -115,6 +122,7 @@ namespace ContratosAPI.Services
             return prestacoes;
         }
 
+        // Verifica se um contrato existe
         private void VerificaErro(Contrato contrato)
         {
             if(contrato == null)

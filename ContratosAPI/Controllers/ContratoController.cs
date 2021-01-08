@@ -65,14 +65,14 @@ namespace ContratosAPI.Controllers
 
         [HttpPut]
         [Route("editar/{id}")]
-        public async Task<ActionResult<Contrato>> PutContrato(int id, [FromBody] Contrato contrato)
+        public async Task<Contrato> PutContrato(int id, [FromBody] Contrato contrato)
         {
             return await _service.PutContratoService(id, contrato);
         }
 
         [HttpDelete]
         [Route("deletar/{id}")]
-        public async Task<ActionResult<Contrato>> DeleteContrato(int id)
+        public async Task<Contrato> DeleteContrato(int id)
         {
             return await _service.DeleteContratoService(id);
         }

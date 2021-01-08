@@ -19,11 +19,10 @@ namespace ContratosAPI.Tests
     {
         private static Mock<HttpMessageHandler> _mock = new Mock<HttpMessageHandler>();
         
+        // Testa o resultado da busca de todos os contratos
         [Fact]
-        public async void GetContratosTests()
+        public async void GetContratosTeste()
         {
-            MockSetup("../../../Data/MockData.json", HttpStatusCode.OK);
-
             var options = new DbContextOptionsBuilder<DataContext>()
             .UseInMemoryDatabase(databaseName: "Database")
             .Options;
@@ -38,19 +37,18 @@ namespace ContratosAPI.Tests
                 foreach (var item in response)
                 {
                     Assert.NotEqual(item.DataContratacao, string.Empty);
-                    Assert.NotEqual(item.QuantidadeParcelas, 0);
-                    Assert.NotEqual(item.Id, 0);
+                    Assert.NotEqual(0, item.QuantidadeParcelas);
+                    Assert.Equal(0, item.Id);
+                    Assert.NotEqual(0, item.ValorFinanciado);
                     Assert.NotNull(item.Prestacoes);
-                    Assert.NotEqual(item.ValorFinanciado, 0);
                 }
             }  
         } 
 
+        // Testa o resultado da busca de um contrato específico
         [Fact]
         public async void GetContratoTeste()
         {
-            MockSetup("../../../Data/MockData.json", HttpStatusCode.OK);
-
             var options = new DbContextOptionsBuilder<DataContext>()
             .UseInMemoryDatabase(databaseName: "Database")
             .Options;
@@ -63,25 +61,49 @@ namespace ContratosAPI.Tests
                 ContratoService contrato = new ContratoService(context);
                 Contrato response = await contrato.GetContratoService(1);
                 Assert.NotEqual(response.DataContratacao, string.Empty);
-                Assert.NotEqual(response.QuantidadeParcelas, 0);
-                Assert.NotEqual(response.Id, 0);
+                Assert.NotEqual(0, response.QuantidadeParcelas);
+                Assert.NotEqual(0, response.Id);
+                Assert.NotEqual(0, response.ValorFinanciado);
                 Assert.NotNull(response.Prestacoes);
-                Assert.NotEqual(response.ValorFinanciado, 0);
-                
             }  
         } 
 
+        // Testa a criação de contratos e suas respectivas parcelas
+        [Fact]
+        public async void PostContratoTeste()
+        {
+            var options = new DbContextOptionsBuilder<DataContext>()
+            .UseInMemoryDatabase(databaseName: "Database")
+            .Options;
+
+            // Use a clean instance of the context to run the test
+            using (var context = new DataContext(options))
+            {
+                var novoContrato = new Contrato {
+                    DataContratacao = "10/01/2021", 
+                    QuantidadeParcelas = 2, 
+                    ValorFinanciado = 4};
+
+                ContratoService contrato = new ContratoService(context);
+                Contrato response = await contrato.PostContratoService(novoContrato);
+                Assert.NotEqual(response.DataContratacao, string.Empty);
+                Assert.NotEqual(0, response.QuantidadeParcelas);
+                Assert.NotEqual(0, response.Id);
+                Assert.NotEqual(0, response.ValorFinanciado);
+                Assert.NotNull(response.Prestacoes);   
+            }  
+        } 
 
         private void CriarContrato(DbContextOptions<DataContext> options)
         {   
-            var p = new Prestacao();
-            p.ContratoId = 1;
-            p.DataPagamento = DateTime.Today.Date;
-            p.DataVencimento = DateTime.Today.Date;
-            p.Status = "Baixada";
-            p.Valor = 22;
+            var prestacao = new Prestacao();
+            prestacao.ContratoId = 1;
+            prestacao.DataPagamento = DateTime.Today.Date;
+            prestacao.DataVencimento = DateTime.Today.Date;
+            prestacao.Status = "Baixada";
+            prestacao.Valor = 22;
             var prestacoes = new List<Prestacao>();
-            prestacoes.Add(p);
+            prestacoes.Add(prestacao);
             using (var context = new DataContext(options))
             {
                 context.Contratos.Add(new Contrato {DataContratacao = "10/01/2021", QuantidadeParcelas = 2, ValorFinanciado = 4, Prestacoes = prestacoes});
