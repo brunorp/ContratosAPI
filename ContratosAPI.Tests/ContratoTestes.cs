@@ -59,7 +59,7 @@ namespace ContratosAPI.Tests
             using (var context = new DataContext(options))
             {
                 ContratoService contrato = new ContratoService(context);
-                Contrato resultado = await contrato.GetContratoService(1);
+                Contrato resultado = await contrato.GetContratoService(2);
                 Assert.NotEqual(resultado.DataContratacao, string.Empty);
                 Assert.NotEqual(0, resultado.QuantidadeParcelas);
                 Assert.NotEqual(0, resultado.Id);
@@ -113,15 +113,35 @@ namespace ContratosAPI.Tests
                     ValorFinanciado = 200};
 
                 ContratoService contrato = new ContratoService(context);
-                Contrato resultado = await contrato.PutContratoService(1, contratoEditado);
+                Contrato resultado = await contrato.PutContratoService(2, contratoEditado);
                 Assert.NotEqual(resultado.DataContratacao, string.Empty);
                 Assert.NotEqual(0, resultado.QuantidadeParcelas);
                 Assert.NotEqual(0, resultado.Id);
-                Assert.NotEqual(0, resultado.Prestacoes.Count);
+                Assert.NotNull(resultado.Prestacoes);
                 Assert.Equal(200, resultado.ValorFinanciado);
             }  
         } 
 
+        [Fact]
+        public async void DeleteContratoTeste()
+        {
+            var options = new DbContextOptionsBuilder<DataContext>()
+            .UseInMemoryDatabase(databaseName: "Database")
+            .Options;
+
+            CriarMultiplosContratos(options);
+
+            // Use a clean instance of the context to run the test
+            using (var context = new DataContext(options))
+            {
+                ContratoService contrato = new ContratoService(context);
+                await contrato.DeleteContratoService(1);
+                await Assert.ThrowsAsync<ArgumentNullException>(
+                    async () => await contrato.GetContratoService(1)
+                );
+            }  
+        } 
+        
         private void CriarMultiplosContratos(DbContextOptions<DataContext> options)
         {   
             var prestacao = new Prestacao();

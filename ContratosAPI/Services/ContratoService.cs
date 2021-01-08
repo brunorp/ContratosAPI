@@ -101,13 +101,18 @@ namespace ContratosAPI.Services
             var dataVencimento = DateTime.Today.Date.AddDays(30);
             var dataPagamento = DateTime.Today.Date.AddDays(25);
             double valorPrestacao = (double)contrato.ValorFinanciado/contrato.QuantidadeParcelas;
-            var status = "Baixada";
+            string status;
             for(var i = 0; i<contrato.QuantidadeParcelas; i++)
             {
+                status = "Baixada";
                 Prestacao prestacao = new Prestacao();
                 prestacao.ContratoId = id;
-                prestacao.DataVencimento = dataVencimento;
-                prestacao.DataPagamento = dataPagamento;
+                if(i != 1)
+                    prestacao.DataVencimento = new DateTime(2000, 12, 01);
+                else
+                    prestacao.DataVencimento = dataVencimento;
+                if(i % 2 == 0)
+                    prestacao.DataPagamento = dataPagamento;
                 prestacao.Valor = valorPrestacao;
                 if(prestacao.DataVencimento >= DateTime.Today.Date && prestacao.DataPagamento.Equals(null))
                     status = "Aberta";
