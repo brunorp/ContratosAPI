@@ -100,31 +100,41 @@ namespace ContratosAPI.Services
             List<Prestacao> prestacoes = new List<Prestacao>();
             var dataVencimento = DateTime.Today.Date.AddDays(30);
             var dataPagamento = DateTime.Today.Date.AddDays(25);
-            double valorPrestacao = (double)contrato.ValorFinanciado/contrato.QuantidadeParcelas;
-            string status;
             for(var i = 0; i<contrato.QuantidadeParcelas; i++)
-            {
-                status = "Baixada";
+            {             
                 Prestacao prestacao = new Prestacao();
                 prestacao.ContratoId = id;
-                if(i != 1)
-                    prestacao.DataVencimento = new DateTime(2000, 12, 01);
-                else
-                    prestacao.DataVencimento = dataVencimento;
-                if(i % 2 == 0)
-                    prestacao.DataPagamento = dataPagamento;
-                prestacao.Valor = valorPrestacao;
-                if(prestacao.DataVencimento >= DateTime.Today.Date && prestacao.DataPagamento.Equals(null))
-                    status = "Aberta";
-                else if(prestacao.DataVencimento < DateTime.Today.Date && prestacao.DataPagamento.Equals(null))
-                    status = "Atrasada";
-                prestacao.Status = status;
+                DefineDatas(i, dataPagamento, dataVencimento, prestacao);
+                prestacao.Valor = (double)contrato.ValorFinanciado/contrato.QuantidadeParcelas;;
+                prestacao.Status = DefineStatus(prestacao);
                 _context.Prestacoes.Add(prestacao);
+                
                 dataVencimento = dataVencimento.AddDays(30);
                 dataPagamento = dataPagamento.AddDays(25);
                 prestacoes.Add(prestacao);
             }            
             return prestacoes;
+        }
+
+        public string DefineStatus(Prestacao prestacao)
+        {
+            var status = "Baixada";
+            if(prestacao.DataVencimento >= DateTime.Today.Date && prestacao.DataPagamento.Equals(null))
+                status = "Aberta";
+            else if(prestacao.DataVencimento < DateTime.Today.Date && prestacao.DataPagamento.Equals(null))
+                status = "Atrasada";
+
+            return status;
+        }
+
+        public void DefineDatas(int i, DateTime dataPagamento, DateTime dataVencimento, Prestacao prestacao)
+        {
+            if(i != 1)
+                prestacao.DataVencimento = new DateTime(2000, 12, 01);
+            else
+                prestacao.DataVencimento = dataVencimento;
+            if(i % 2 == 0)
+                prestacao.DataPagamento = dataPagamento;
         }
 
         // Verifica se um contrato existe
