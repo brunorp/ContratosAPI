@@ -132,7 +132,7 @@ namespace ContratosAPI.Services
         {
             if(contrato == null)
             {
-                throw new ArgumentNullException("Contrato inexistente");
+                throw new ArgumentNullException("contrato");
             }
         }
     }

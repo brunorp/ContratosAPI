@@ -33,7 +33,7 @@ namespace ContratosAPI.Controllers
         [Route("")]
         public async Task<List<Contrato>> GetContratosCache([FromServices] DataContext context, [FromServices]IMemoryCache cache)
         {
-            if (!await _featureManager.IsEnabledAsync(nameof(MyFeatureFlags.CacheRepositories)))
+            if (!await _featureManager.IsEnabledAsync(nameof(MyFeatureSetting.CacheRepositories)))
             {
                 _cache.Remove(_context.Contratos.ToListAsync());
             }

@@ -1,6 +1,6 @@
 namespace ContratosAPI
 {
-    public enum MyFeatureFlags
+    public enum MyFeatureSetting
     {
         CacheRepositories
     }
