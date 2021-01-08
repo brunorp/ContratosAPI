@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using ContratosAPI.Data;
 using ContratosAPI.Models;
@@ -11,6 +12,7 @@ using Microsoft.FeatureManagement;
 
 namespace ContratosAPI.Controllers
 {   
+    [ExcludeFromCodeCoverage]
     [ApiController]
     [Route("contrato")]
     public class ContratoController : ControllerBase

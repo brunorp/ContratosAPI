@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using ContratosAPI.Data;
 using ContratosAPI.Models;
@@ -6,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace ContratosAPI.Controllers
-{   
+{   [ExcludeFromCodeCoverage]
     [ApiController]
     [Route("prestacoes")]
     public class PrestacaoController : ControllerBase
