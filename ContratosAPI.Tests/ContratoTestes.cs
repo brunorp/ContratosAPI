@@ -27,18 +27,18 @@ namespace ContratosAPI.Tests
             .UseInMemoryDatabase(databaseName: "Database")
             .Options;
 
-            CriarContrato(options);
+            CriarMultiplosContratos(options);
 
             // Use a clean instance of the context to run the test
             using (var context = new DataContext(options))
             {
                 ContratoService contrato = new ContratoService(context);
-                var response = await contrato.GetContratosService();
-                foreach (var item in response)
+                var resultado = await contrato.GetContratosService();
+                foreach (var item in resultado)
                 {
                     Assert.NotEqual(item.DataContratacao, string.Empty);
                     Assert.NotEqual(0, item.QuantidadeParcelas);
-                    Assert.Equal(0, item.Id);
+                    Assert.NotEqual(0, item.Id);
                     Assert.NotEqual(0, item.ValorFinanciado);
                     Assert.NotNull(item.Prestacoes);
                 }
@@ -53,18 +53,18 @@ namespace ContratosAPI.Tests
             .UseInMemoryDatabase(databaseName: "Database")
             .Options;
 
-            CriarContrato(options);
+            CriarMultiplosContratos(options);
 
             // Use a clean instance of the context to run the test
             using (var context = new DataContext(options))
             {
                 ContratoService contrato = new ContratoService(context);
-                Contrato response = await contrato.GetContratoService(1);
-                Assert.NotEqual(response.DataContratacao, string.Empty);
-                Assert.NotEqual(0, response.QuantidadeParcelas);
-                Assert.NotEqual(0, response.Id);
-                Assert.NotEqual(0, response.ValorFinanciado);
-                Assert.NotNull(response.Prestacoes);
+                Contrato resultado = await contrato.GetContratoService(1);
+                Assert.NotEqual(resultado.DataContratacao, string.Empty);
+                Assert.NotEqual(0, resultado.QuantidadeParcelas);
+                Assert.NotEqual(0, resultado.Id);
+                Assert.NotEqual(0, resultado.ValorFinanciado);
+                Assert.NotNull(resultado.Prestacoes);
             }  
         } 
 
@@ -85,16 +85,44 @@ namespace ContratosAPI.Tests
                     ValorFinanciado = 4};
 
                 ContratoService contrato = new ContratoService(context);
-                Contrato response = await contrato.PostContratoService(novoContrato);
-                Assert.NotEqual(response.DataContratacao, string.Empty);
-                Assert.NotEqual(0, response.QuantidadeParcelas);
-                Assert.NotEqual(0, response.Id);
-                Assert.NotEqual(0, response.ValorFinanciado);
-                Assert.NotNull(response.Prestacoes);   
+                Contrato resultado = await contrato.PostContratoService(novoContrato);
+                Assert.NotEqual(resultado.DataContratacao, string.Empty);
+                Assert.NotEqual(0, resultado.QuantidadeParcelas);
+                Assert.NotEqual(0, resultado.Id);
+                Assert.NotEqual(0, resultado.ValorFinanciado);
+                Assert.Equal(2, resultado.Prestacoes.Count);   
             }  
         } 
 
-        private void CriarContrato(DbContextOptions<DataContext> options)
+        // Testa a edição de contratos e suas respectivas parcelas
+        [Fact]
+        public async void PutContratoTeste()
+        {
+            var options = new DbContextOptionsBuilder<DataContext>()
+            .UseInMemoryDatabase(databaseName: "Database")
+            .Options;
+
+            CriarMultiplosContratos(options);
+
+            // Use a clean instance of the context to run the test
+            using (var context = new DataContext(options))
+            {
+                var contratoEditado = new Contrato {
+                    DataContratacao = "15/01/2021", 
+                    QuantidadeParcelas = 10, 
+                    ValorFinanciado = 200};
+
+                ContratoService contrato = new ContratoService(context);
+                Contrato resultado = await contrato.PutContratoService(1, contratoEditado);
+                Assert.NotEqual(resultado.DataContratacao, string.Empty);
+                Assert.NotEqual(0, resultado.QuantidadeParcelas);
+                Assert.NotEqual(0, resultado.Id);
+                Assert.NotEqual(0, resultado.Prestacoes.Count);
+                Assert.Equal(200, resultado.ValorFinanciado);
+            }  
+        } 
+
+        private void CriarMultiplosContratos(DbContextOptions<DataContext> options)
         {   
             var prestacao = new Prestacao();
             prestacao.ContratoId = 1;
