@@ -1,16 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Net;
 using System.Net.Http;
-using System.Threading;
-using System.Threading.Tasks;
 using ContratosAPI.Data;
 using ContratosAPI.Models;
 using ContratosAPI.Services;
 using Microsoft.EntityFrameworkCore;
 using Moq;
-using Moq.Protected;
 using Xunit;
 
 namespace ContratosAPI.Tests
@@ -159,17 +154,6 @@ namespace ContratosAPI.Tests
                 context.Contratos.Add(new Contrato {DataContratacao = "12/01/2021", QuantidadeParcelas = 4, ValorFinanciado = 6, Prestacoes = prestacoes});
                 context.SaveChanges();
             }
-        }
-
-        private void MockSetup(string dir, HttpStatusCode statusCode)
-        {   
-            var mockData = new StringContent(File.ReadAllText(dir));
-            _mock.Protected().Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
-            .ReturnsAsync(new HttpResponseMessage
-            {
-                StatusCode = statusCode,
-                Content = mockData
-            });
         }
     }
 }
