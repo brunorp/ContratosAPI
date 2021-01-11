@@ -15,7 +15,7 @@ namespace ContratosAPI.Models
         public int QuantidadeParcelas { get; set; }
 
         [Required(ErrorMessage = "Este campo é obrigatório.")]
-        public int ValorFinanciado { get; set; }
+        public double ValorFinanciado { get; set; }
 
         public List<Prestacao> Prestacoes { get; set; }
     }
