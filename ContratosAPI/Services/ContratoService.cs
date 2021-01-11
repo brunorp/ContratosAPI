@@ -23,7 +23,7 @@ namespace ContratosAPI.Services
         {
             var contrato = await _context.Contratos.FindAsync(id);
             
-            VerificaErro(contrato);
+            VerificaExistenciaContrato(contrato);
 
             contrato.Prestacoes = await _context.Prestacoes.Where(p => contrato.Id == p.ContratoId).ToListAsync();
 
@@ -56,7 +56,7 @@ namespace ContratosAPI.Services
         // Atualiza um contrato e suas respectivas parcelas
         public async Task<Contrato> PutContratoService(int id, [FromBody] Contrato contrato)
         {
-            VerificaErro(contrato);
+            VerificaExistenciaContrato(contrato);
 
             var contratoExistente = await _context.Contratos.FindAsync(id);
 
@@ -78,7 +78,7 @@ namespace ContratosAPI.Services
         {
             var contrato = await _context.Contratos.FindAsync(id);
 
-            VerificaErro(contrato);
+            VerificaExistenciaContrato(contrato);
 
             _context.Contratos.Remove(contrato);
             await DeletePrestacao(id);
@@ -127,6 +127,7 @@ namespace ContratosAPI.Services
             return status;
         }
 
+        // Condições criadas para realizar os testes de todos os possíveis status.
         public void DefineDatas(int i, DateTime dataPagamento, DateTime dataVencimento, Prestacao prestacao)
         {
             if(i != 1)
@@ -138,7 +139,7 @@ namespace ContratosAPI.Services
         }
 
         // Verifica se um contrato existe
-        private void VerificaErro(Contrato contrato)
+        private void VerificaExistenciaContrato(Contrato contrato)
         {
             if(contrato == null)
             {

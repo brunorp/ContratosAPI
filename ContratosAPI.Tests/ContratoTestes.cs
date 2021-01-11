@@ -1,19 +1,15 @@
 using System;
 using System.Collections.Generic;
-using System.Net.Http;
 using ContratosAPI.Data;
 using ContratosAPI.Models;
 using ContratosAPI.Services;
 using Microsoft.EntityFrameworkCore;
-using Moq;
 using Xunit;
 
 namespace ContratosAPI.Tests
 {
     public class ContratoTestes
-    {
-        private static Mock<HttpMessageHandler> _mock = new Mock<HttpMessageHandler>();
-        
+    {        
         // Testa o resultado da busca de todos os contratos
         [Fact]
         public async void GetContratosTeste()
@@ -139,6 +135,18 @@ namespace ContratosAPI.Tests
         
         private void CriarMultiplosContratos(DbContextOptions<DataContext> options)
         {   
+            
+            using (var context = new DataContext(options))
+            {
+                context.Contratos.Add(new Contrato {DataContratacao = "10/01/2021", QuantidadeParcelas = 2, ValorFinanciado = 4, Prestacoes = CriaListaPrestacoes()});
+                context.Contratos.Add(new Contrato {DataContratacao = "11/01/2021", QuantidadeParcelas = 3, ValorFinanciado = 5, Prestacoes = CriaListaPrestacoes()});
+                context.Contratos.Add(new Contrato {DataContratacao = "12/01/2021", QuantidadeParcelas = 4, ValorFinanciado = 6, Prestacoes = CriaListaPrestacoes()});
+                context.SaveChanges();
+            }
+        }
+
+        private List<Prestacao> CriaListaPrestacoes()
+        {
             var prestacao = new Prestacao();
             prestacao.ContratoId = 1;
             prestacao.DataPagamento = DateTime.Today.Date;
@@ -147,13 +155,8 @@ namespace ContratosAPI.Tests
             prestacao.Valor = 22;
             var prestacoes = new List<Prestacao>();
             prestacoes.Add(prestacao);
-            using (var context = new DataContext(options))
-            {
-                context.Contratos.Add(new Contrato {DataContratacao = "10/01/2021", QuantidadeParcelas = 2, ValorFinanciado = 4, Prestacoes = prestacoes});
-                context.Contratos.Add(new Contrato {DataContratacao = "11/01/2021", QuantidadeParcelas = 3, ValorFinanciado = 5, Prestacoes = prestacoes});
-                context.Contratos.Add(new Contrato {DataContratacao = "12/01/2021", QuantidadeParcelas = 4, ValorFinanciado = 6, Prestacoes = prestacoes});
-                context.SaveChanges();
-            }
+            
+            return prestacoes;
         }
     }
 }
