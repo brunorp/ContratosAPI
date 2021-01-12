@@ -1,5 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace ContratosAPI.Models
 {
@@ -8,8 +10,11 @@ namespace ContratosAPI.Models
         [Key]
         public int Id { get; set; }
 
+        [ForeignKey("Contrato")]
         [Required(ErrorMessage = "Este campo é obrigatório.")]
         public int ContratoId { get; set; }
+        [JsonIgnore]
+        public Contrato Contrato { get; set; }
 
         [Required(ErrorMessage = "Este campo é obrigatório.")]
         public DateTime DataVencimento { get; set; }
