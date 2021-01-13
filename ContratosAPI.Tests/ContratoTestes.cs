@@ -10,10 +10,10 @@ namespace ContratosAPI.Tests
 {
     public class ContratoTestes
     {        
-        public DbContextOptions<DataContext> _options = new DbContextOptionsBuilder<DataContext>()
+        private DbContextOptions<DataContext> _options = new DbContextOptionsBuilder<DataContext>()
             .UseInMemoryDatabase(databaseName: "Database")
             .Options;
-            
+
         // Testa o resultado da busca de todos os contratos
         [Fact]
         public async void GetContratosTeste()
