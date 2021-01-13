@@ -10,18 +10,18 @@ namespace ContratosAPI.Tests
 {
     public class ContratoTestes
     {        
+        public DbContextOptions<DataContext> _options = new DbContextOptionsBuilder<DataContext>()
+            .UseInMemoryDatabase(databaseName: "Database")
+            .Options;
+            
         // Testa o resultado da busca de todos os contratos
         [Fact]
         public async void GetContratosTeste()
         {
-            var options = new DbContextOptionsBuilder<DataContext>()
-            .UseInMemoryDatabase(databaseName: "Database")
-            .Options;
-
-            CriarMultiplosContratos(options);
+            CriarMultiplosContratos(_options);
 
             // Use a clean instance of the context to run the test
-            using (var context = new DataContext(options))
+            using (var context = new DataContext(_options))
             {
                 ContratoService contrato = new ContratoService(context);
                 var resultado = await contrato.GetContratosService();
@@ -40,14 +40,10 @@ namespace ContratosAPI.Tests
         [Fact]
         public async void GetContratoTeste()
         {
-            var options = new DbContextOptionsBuilder<DataContext>()
-            .UseInMemoryDatabase(databaseName: "Database")
-            .Options;
-
-            CriarMultiplosContratos(options);
+            CriarMultiplosContratos(_options);
 
             // Use a clean instance of the context to run the test
-            using (var context = new DataContext(options))
+            using (var context = new DataContext(_options))
             {
                 ContratoService contrato = new ContratoService(context);
                 Contrato resultado = await contrato.GetContratoService(2);
@@ -63,12 +59,8 @@ namespace ContratosAPI.Tests
         [Fact]
         public async void PostContratoTeste()
         {
-            var options = new DbContextOptionsBuilder<DataContext>()
-            .UseInMemoryDatabase(databaseName: "Database")
-            .Options;
-
             // Use a clean instance of the context to run the test
-            using (var context = new DataContext(options))
+            using (var context = new DataContext(_options))
             {
                 var novoContrato = new Contrato {
                     DataContratacao = "10/01/2021", 
@@ -89,14 +81,10 @@ namespace ContratosAPI.Tests
         [Fact]
         public async void PutContratoTeste()
         {
-            var options = new DbContextOptionsBuilder<DataContext>()
-            .UseInMemoryDatabase(databaseName: "Database")
-            .Options;
-
-            CriarMultiplosContratos(options);
+            CriarMultiplosContratos(_options);
 
             // Use a clean instance of the context to run the test
-            using (var context = new DataContext(options))
+            using (var context = new DataContext(_options))
             {
                 var contratoEditado = new Contrato {
                     DataContratacao = "15/01/2021", 
@@ -116,14 +104,10 @@ namespace ContratosAPI.Tests
         [Fact]
         public async void DeleteContratoTeste()
         {
-            var options = new DbContextOptionsBuilder<DataContext>()
-            .UseInMemoryDatabase(databaseName: "Database")
-            .Options;
-
-            CriarMultiplosContratos(options);
+            CriarMultiplosContratos(_options);
 
             // Use a clean instance of the context to run the test
-            using (var context = new DataContext(options))
+            using (var context = new DataContext(_options))
             {
                 ContratoService contrato = new ContratoService(context);
                 await contrato.DeleteContratoService(1);
